@@ -24,9 +24,9 @@ function FakeAddressGenerator()
     
     const generateFakeAddress = () => {
         return {
-            street: fakerRO.address.streetAddress(),
-            city: fakerRO.address.city(),
-            zipCode: fakerRO.address.zipCode(),
+            street: fakerRO.location.streetAddress(),
+            city: fakerRO.location.city(),
+            zipCode: fakerRO.location.zipCode(),
             country: 'Romania'
         };
     };
@@ -68,7 +68,6 @@ function FakeAddressGenerator()
                     <div className="address-card">
                         <h3>Add New Address</h3>
                         <form onSubmit={(event) => {
-                            event.preventDefault();
                             handleSaveAddress();
                         }}>
                             <label style={{ display: 'block' }}>

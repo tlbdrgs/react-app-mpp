@@ -1,7 +1,6 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 
-
-function AddressCard({ address, onUpdate, onDelete }) {
+function AddressCard({ address, onUpdate, onDelete, index }) {
     const [isEditing, setIsEditing] = useState(false);
     const [newAddress, setNewAddress] = useState(address);
 
@@ -18,10 +17,6 @@ function AddressCard({ address, onUpdate, onDelete }) {
     const handleChange = (event) => {
         const { name, value } = event.target;
         setNewAddress({ ...newAddress, [name]: value });
-    };
-
-    const handleDelete = () => {
-        onDelete(address);
     };
 
     return (
@@ -48,11 +43,13 @@ function AddressCard({ address, onUpdate, onDelete }) {
                 </form>
             ) : (
                 <>
-                    <strong>Street:</strong> {address.street}<br/>
-                    <strong>City:</strong> {address.city}<br/>
-                    <strong>Zip Code:</strong> {address.zipCode}<br/>
-                    <strong>Country:</strong> {address.country}<br/>
-                    <button className="update-button" onClick={handleUpdate}>Update</button>
+                    <strong>Street:</strong> {address.street}<br />
+                    <strong>City:</strong> {address.city}<br />
+                    <strong>Zip Code:</strong> {address.zipCode}<br />
+                    <strong>Country:</strong> {address.country}<br />
+                    <button className="update-button" onClick={handleUpdate} data-testid={`update-button-${index}`}>
+                        Update
+                    </button>
                     <button className="delete-button" onClick={() => onDelete(address)}>Delete</button>
                 </>
             )}

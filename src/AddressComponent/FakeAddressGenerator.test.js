@@ -1,47 +1,46 @@
-// import React from 'react';
-// import { render, fireEvent } from '@testing-library/react';
-// import FakeAddressGenerator from './FakeAddressGenerator';
+import React from 'react';
+import { render, fireEvent, screen } from '@testing-library/react';
+import FakeAddressGenerator from './FakeAddressGenerator';
 
-// describe('FakeAddressGenerator component', () => {
-//     it('renders the header correctly', () => {
-//         const { getByText } = render(<FakeAddressGenerator />);
-//         expect(getByText('Fake Address Generator')).toBeInTheDocument();
-//     });
+describe('FakeAddressGenerator', () => {
+    test('renders Fake Address Generator component', () => {
+        render(<FakeAddressGenerator />);
+        expect(screen.getByText('Fake Address Generator')).toBeInTheDocument();
+    });
 
-//     it('adds a new address when "Add Address" button is clicked', () => {
-//         const { getByText, getByLabelText } = render(<FakeAddressGenerator />);
+    test('adds, updates, and deletes an address', () => {
+        render(<FakeAddressGenerator />);
 
-//         // Click the "Add Address" button
-//         fireEvent.click(getByText('Add Address'));
+        for (let i = 0; i < 5; i++) {
+            fireEvent.click(screen.getAllByText('Delete')[0]);
+        }
 
-//         // Fill out the form fields
-//         fireEvent.change(getByLabelText('Street:'), { target: { value: '123 Main St' } });
-//         fireEvent.change(getByLabelText('City:'), { target: { value: 'City' } });
-//         fireEvent.change(getByLabelText('Zip Code:'), { target: { value: '123456' } });
+        expect(screen.queryByText('Update')).not.toBeInTheDocument();
 
-//         // Click the "Save Address" button
-//         fireEvent.click(getByText('Save Address'));
 
-//         // Check if the new address is rendered
-//         expect(getByText('123 Main St')).toBeInTheDocument();
-//         expect(getByText('City')).toBeInTheDocument();
-//         expect(getByText('123456')).toBeInTheDocument();
-//         expect(getByText('Romania')).toBeInTheDocument();
-//     });
+        fireEvent.click(screen.getByText('Add Address'));
 
-//     it('displays an error message for invalid zip code', () => {
-//         const { getByText, getByLabelText } = render(<FakeAddressGenerator />);
+        const streetInput = screen.getByLabelText('Street:');
+        const cityInput = screen.getByLabelText('City:');
+        const zipCodeInput = screen.getByLabelText('Zip Code:');
+        fireEvent.change(streetInput, { target: { value: '123 Main St' } });
+        fireEvent.change(cityInput, { target: { value: 'Springfield' } });
+        fireEvent.change(zipCodeInput, { target: { value: '123456' } });
+        fireEvent.click(screen.getByText('Save Address'));
 
-//         // Click the "Add Address" button
-//         fireEvent.click(getByText('Add Address'));
+        const updateButton = screen.getByText('Update');
+        fireEvent.click(updateButton);
 
-//         // Fill out the form fields with invalid zip code
-//         fireEvent.change(getByLabelText('Zip Code:'), { target: { value: '123' } });
 
-//         // Click the "Save Address" button
-//         fireEvent.click(getByText('Save Address'));
+        fireEvent.change(screen.getByLabelText('Street:'), { target: { value: 'Updated Main St' } });
+        fireEvent.change(screen.getByLabelText('City:'), { target: { value: 'Updated City' } });
+        fireEvent.click(screen.getByText('Save'));
 
-//         // Check if the error message is displayed
-//         expect(getByText('Zip code should be exactly 6 numbers.')).toBeInTheDocument();
-//     });
-// });
+        expect(screen.getByText(/Updated Main St/)).toBeInTheDocument();
+        expect(screen.getByText(/Updated City/)).toBeInTheDocument();
+
+        fireEvent.click(screen.getByText('Delete'));
+
+        expect(screen.queryByText('Delete')).not.toBeInTheDocument();
+    });
+});
