@@ -39,6 +39,10 @@ function AddressCard({ address, onUpdate, onDelete, index }) {
                         Country:
                         <input type="text" name="country" value={newAddress.country} readOnly />
                     </label>
+                    <label>
+                        Random float:
+                        <input type="number" step="0.01" name="randNumber" value={newAddress.randNumber} onChange={handleChange} />
+                    </label>
                     <button type="submit">Save</button>
                 </form>
             ) : (
@@ -47,6 +51,7 @@ function AddressCard({ address, onUpdate, onDelete, index }) {
                     <strong>City:</strong> {address.city}<br />
                     <strong>Zip Code:</strong> {address.zipCode}<br />
                     <strong>Country:</strong> {address.country}<br />
+                    <strong>Random Number:</strong> {address.randNumber}<br/>
                     <button className="update-button" onClick={handleUpdate} data-testid={`update-button-${index}`}>
                         Update
                     </button>

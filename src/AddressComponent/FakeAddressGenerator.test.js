@@ -43,4 +43,8 @@ describe('FakeAddressGenerator', () => {
 
         expect(screen.queryByText('Delete')).not.toBeInTheDocument();
     });
+
+    test('sorts addresses by city name in ascending order', () => {
+        render(<FakeAddressGenerator />);
+      });
 });
